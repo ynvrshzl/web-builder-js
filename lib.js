@@ -1,25 +1,31 @@
-// example usage: 
-// create_element({ tag: 'p', insertin: document.body, getref: 1 })
 
-export function create_element(data = {}) {
+/** Utility function for quickly creating html elements */
+export function create(data = {}, attributes = {}) {
 
+    // setup static variables
     const tag = data["tag"];
     const el = document.createElement(tag);
 
 
-
     /** handle custom attributes here */
     if (data['attr']) {
+        // attr: { key: value, key: value }
         for (let [key, value] of Object.entries(data['attr'])) {
             el.setAttribute(key, value);
         }
     }
-    if (data['classes']) {
-        el.classList.add(data['classes'])
+    if (data['checked'] == true) {
+        el.checked = true;
     }
+
+    /* handle an array of classes. can be a string or array */
+    if (data['classes']) {
+        el.classList.add(...data['classes'])
+    }
+
     /** handle appendchild, in a more intuitive way */
-    if (data['insertin']) {
-        data['insertin'].appendChild(el);
+    if (data['inside']) {
+        data['inside'].appendChild(el);
     }
     /** handle appendchild, in a more intuitive way */
     if (data['addtobody']) {
@@ -40,6 +46,13 @@ export function create_element(data = {}) {
     /** setup text */
     if (data['innerhtml']) {
         el.innerHTML = data['innerhtml'];
+    }
+    /** setup text */
+    if (data['text']) {
+        el.textContent = data['text'];
+    }
+    if (data['onclick']) {
+        el.onclick = data['onclick'];
     }
 
     /** return reference to element? */
